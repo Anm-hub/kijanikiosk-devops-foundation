@@ -1,0 +1,144 @@
+=== PHASE 1: PACKAGE MANAGEMENT ===
+Canceled hold on curl.
+  -> curl had an existing apt-mark hold; temporarily released for version check
+Hit:1 http://security.ubuntu.com/ubuntu resolute-security InRelease
+Hit:2 https://dl.google.com/linux/chrome-stable/deb stable InRelease
+Ign:3 http://ke.archive.ubuntu.com/ubuntu resolute InRelease
+Ign:4 http://ke.archive.ubuntu.com/ubuntu resolute-updates InRelease
+Ign:5 http://ke.archive.ubuntu.com/ubuntu resolute-backports InRelease
+Ign:5 http://ke.archive.ubuntu.com/ubuntu resolute-backports InRelease
+Ign:4 http://ke.archive.ubuntu.com/ubuntu resolute-updates InRelease
+Ign:3 http://ke.archive.ubuntu.com/ubuntu resolute InRelease
+Ign:3 http://ke.archive.ubuntu.com/ubuntu resolute InRelease
+Ign:4 http://ke.archive.ubuntu.com/ubuntu resolute-updates InRelease
+Ign:5 http://ke.archive.ubuntu.com/ubuntu resolute-backports InRelease
+Err:5 http://ke.archive.ubuntu.com/ubuntu resolute-backports InRelease
+  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+Err:4 http://ke.archive.ubuntu.com/ubuntu resolute-updates InRelease
+  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+Err:3 http://ke.archive.ubuntu.com/ubuntu resolute InRelease
+  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable) Could not connect to ke.archive.ubuntu.com:80 (197.155.77.1), connection timed out
+  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+Reading package lists...
+W: Failed to fetch http://ke.archive.ubuntu.com/ubuntu/dists/resolute/InRelease  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+W: Failed to fetch http://ke.archive.ubuntu.com/ubuntu/dists/resolute-updates/InRelease  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+W: Failed to fetch http://ke.archive.ubuntu.com/ubuntu/dists/resolute-backports/InRelease  Cannot initiate the connection to ke.archive.ubuntu.com:80 (2c0f:fe40:8001:10::1). - connect (101: Network is unreachable)
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+  [PASS] curl version matches pinned target (8.18.0-1ubuntu2.7)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+acl is already the newest version (2.3.2-2).
+ufw is already the newest version (0.36.2-9build1).
+Solving dependencies...
+0 upgraded, 0 newly installed, 0 to remove and 50 not upgraded.
+curl set on hold.
+  [PASS] curl held at pinned version
+=== PHASE 2: USERS AND GROUPS ===
+  -> Already exists: group kijanikiosk
+  -> Already exists: kk-api (shell=/sbin/nologin home=/opt/kijanikiosk)
+  -> kk-api already correctly configured, no change needed
+  -> Already exists: kk-payments (shell=/sbin/nologin home=/opt/kijanikiosk)
+  -> kk-payments already correctly configured, no change needed
+  -> Already exists: kk-logs (shell=/sbin/nologin home=/opt/kijanikiosk)
+  -> kk-logs already correctly configured, no change needed
+  [PASS] kk-api has no interactive shell (/sbin/nologin)
+  [PASS] kk-payments has no interactive shell (/sbin/nologin)
+  [PASS] kk-logs has no interactive shell (/sbin/nologin)
+=== PHASE 3: DIRECTORY HIERARCHY AND ACL PERMISSIONS ===
+  -> Already correct: /opt/kijanikiosk/config mode is 750
+  [PASS] config directory is 750 (was 777 pre-provisioning)
+  [PASS] default ACL for kk-api present on shared/logs
+=== PHASE 4: ENVIRONMENT FILES AND SYSTEMD SERVICE UNITS ===
+  -> Already exists: /opt/kijanikiosk/config/api.env
+  -> Already exists: /opt/kijanikiosk/config/payments-api.env
+  -> Already exists: /opt/kijanikiosk/config/logs.env
+  [PASS] /opt/kijanikiosk/config/api.env readable by kk-api
+  [PASS] /opt/kijanikiosk/config/payments-api.env readable by kk-payments
+  [PASS] /opt/kijanikiosk/config/logs.env readable by kk-logs
+  -> Already exists: /etc/systemd/system/kk-api.service (overwriting with intended definition)
+  -> Already exists: /etc/systemd/system/kk-payments.service (overwriting with intended definition)
+  -> Already exists: /etc/systemd/system/kk-logs.service (overwriting with intended definition)
+  -> All three unit files written and daemon reloaded
+=== PHASE 5: FIREWALL BASELINE ===
+  -> Existing ufw rules found before reset: 7
+       [ 1] 3001/tcp on lo             ALLOW IN    Anywhere                   # Loopback: nginx proxy to kk-payments
+       [ 2] 22/tcp                     ALLOW IN    10.0.1.0/24                # SSH from monitoring subnet
+       [ 3] 80/tcp                     ALLOW IN    10.0.1.0/24                # HTTP from monitoring subnet
+       [ 4] 3001/tcp                   ALLOW IN    10.0.1.0/24                # Payments health check from monitoring subnet
+       [ 5] 3001/tcp                   DENY IN     Anywhere                   # Deny external access to internal payments port
+       [ 6] 3001/tcp (v6) on lo        ALLOW IN    Anywhere (v6)              # Loopback: nginx proxy to kk-payments
+       [ 7] 3001/tcp (v6)              DENY IN     Anywhere (v6)              # Deny external access to internal payments port
+Backing up 'user.rules' to '/etc/ufw/user.rules.20260928_160139'
+Backing up 'before.rules' to '/etc/ufw/before.rules.20260928_160139'
+Backing up 'after.rules' to '/etc/ufw/after.rules.20260928_160139'
+Backing up 'user6.rules' to '/etc/ufw/user6.rules.20260928_160139'
+Backing up 'before6.rules' to '/etc/ufw/before6.rules.20260928_160139'
+Backing up 'after6.rules' to '/etc/ufw/after6.rules.20260928_160139'
+
+Default incoming policy changed to 'deny'
+(be sure to update your rules accordingly)
+Default outgoing policy changed to 'allow'
+(be sure to update your rules accordingly)
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated
+Rules updated
+Rules updated
+Rules updated (v6)
+Firewall is active and enabled on system startup
+  -> Firewall rebuilt from explicit baseline (previous ruleset reset)
+=== PHASE 6: SERVICE ACTIVATION AND HARDENING VALIDATION ===
+  [PASS] kk-api.service started without entering failed state
+  -> kk-api.service exposure score: 1.9 (threshold: <3.5)
+  [PASS] kk-api.service exposure score 1.9 is below threshold 3.5
+  [PASS] kk-payments.service started without entering failed state
+  -> kk-payments.service exposure score: 1.4 (threshold: <2.5)
+  [PASS] kk-payments.service exposure score 1.4 is below threshold 2.5
+  [PASS] kk-logs.service started without entering failed state
+  -> kk-logs.service exposure score: 1.9 (threshold: <3.5)
+  [PASS] kk-logs.service exposure score 1.9 is below threshold 3.5
+=== PHASE 7: JOURNAL PERSISTENCE AND LOG ROTATION ===
+  -> journald configured for persistent storage, capped at 500M
+  -> Already exists: /etc/logrotate.d/kijanikiosk (overwriting with intended config)
+  [PASS] logrotate --debug passes for kijanikiosk config
+  [PASS] forced logrotate rotation completed without error
+  [PASS] kk-api can write to shared/logs after forced rotation
+=== PHASE 8: MONITORING HEALTH CHECKS AND FINAL VERIFICATION ===
+  [PASS] health check JSON written to /opt/kijanikiosk/health/last-provision.json
+  [PASS] SSH (22) allowed only from monitoring subnet
+  [PASS] HTTP (80) allowed only from monitoring subnet
+  [PASS] Payments health check (3001) allowed from monitoring subnet
+  [PASS] External access to 3001 explicitly denied
+  [PASS] Loopback allow for 3001 is ordered before the external deny
+
+=== FINAL VERIFICATION SUMMARY ===
+PASS: curl version matches pinned target (8.18.0-1ubuntu2.7)
+PASS: curl held at pinned version
+PASS: kk-api has no interactive shell (/sbin/nologin)
+PASS: kk-payments has no interactive shell (/sbin/nologin)
+PASS: kk-logs has no interactive shell (/sbin/nologin)
+PASS: config directory is 750 (was 777 pre-provisioning)
+PASS: default ACL for kk-api present on shared/logs
+PASS: /opt/kijanikiosk/config/api.env readable by kk-api
+PASS: /opt/kijanikiosk/config/payments-api.env readable by kk-payments
+PASS: /opt/kijanikiosk/config/logs.env readable by kk-logs
+PASS: kk-api.service started without entering failed state
+PASS: kk-api.service exposure score 1.9 is below threshold 3.5
+PASS: kk-payments.service started without entering failed state
+PASS: kk-payments.service exposure score 1.4 is below threshold 2.5
+PASS: kk-logs.service started without entering failed state
+PASS: kk-logs.service exposure score 1.9 is below threshold 3.5
+PASS: logrotate --debug passes for kijanikiosk config
+PASS: forced logrotate rotation completed without error
+PASS: kk-api can write to shared/logs after forced rotation
+PASS: health check JSON written to /opt/kijanikiosk/health/last-provision.json
+PASS: SSH (22) allowed only from monitoring subnet
+PASS: HTTP (80) allowed only from monitoring subnet
+PASS: Payments health check (3001) allowed from monitoring subnet
+PASS: External access to 3001 explicitly denied
+PASS: Loopback allow for 3001 is ordered before the external deny
+
+Total checks: 25, Failed: 0
+=== PROVISIONING COMPLETE -- ALL CHECKS PASSED ===
