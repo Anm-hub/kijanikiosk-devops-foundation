@@ -1,0 +1,59 @@
+# Expected dirty conditions found in pre-provisioning audit:
+# 1. Accounts (kk-api, kk-payments, kk-logs) already exist with login shell /bin/bash:
+#    -> Handled in Phase 2 by id check and updating shell/parameters.
+# 2. Directory /opt/kijanikiosk/config has overly permissive 777 modes and missing ACLs:
+#    -> Handled in Phase 3 by enforcing exact ownership, permissions, and setfacl default rules.
+# 3. No systemd unit files exist yet for kk-api/kk-payments/kk-logs:
+#    -> Handled in Phase 4 by writing unit files inline and executing daemon-reload.
+# 4. UFW ruleset contains manual deny rules on 3001 without comments or proper order:
+#    -> Handled in Phase 5 by calling 'ufw --force reset' before defining commented, ordered rules.
+# 5. Package hold active on curl:
+#    -> Handled in Phase 1 by inspecting apt-mark and enforcing explicit version pinning.
+# 6. No persistent journal storage or size cap configured (inferred: the audit commands specified check disk usage only, not journald.conf directly; no earlier lab in the week required journald persistence, and Phase 7 is the first point this project configures it):
+#    -> Handled in Phase 7 by setting SystemMaxUse=500M and deploying logrotate config.
+=== 1. USER & GROUP AUDIT ===
+kk-api:x:997:973::/home/kk-api:/bin/bash
+kk-payments:x:994:972::/home/kk-payments:/bin/bash
+kk-logs:x:993:971::/home/kk-logs:/bin/bash
+kijanikiosk:x:1001:
+
+=== 2. DIRECTORY STRUCTURE ===
+total 16
+drwxr-xr-x 4 root root 4096 Sep 26 17:16 .
+drwxr-xr-x 4 root root 4096 Sep 26 17:16 ..
+drwxrwxrwx 2 root root 4096 Sep 26 17:16 config
+drwxr-xr-x 3 root root 4096 Sep 26 17:16 shared
+
+=== 3. ACL PERMISSIONS ===
+# file: opt/kijanikiosk/shared/logs/
+# owner: root
+# group: root
+user::rwx
+group::r-x
+other::r-x
+
+# file: opt/kijanikiosk/config/
+# owner: root
+# group: root
+user::rwx
+group::rwx
+other::rwx
+
+
+=== 4. FIREWALL RULES ===
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 3001                       DENY IN     Anywhere                  
+[ 2] 3001 (v6)                  DENY IN     Anywhere (v6)             
+
+
+=== 5. PACKAGE HOLDS ===
+curl
+
+=== 6. SYSTEMD UNITS ===
+
+=== 7. STORAGE & JOURNAL USAGE ===
+4.0K	/opt/kijanikiosk/shared/logs/
+Archived and active journals take up 43.9M in the file system.
