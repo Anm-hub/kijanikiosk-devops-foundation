@@ -1,0 +1,6 @@
+---
+# host_vars/api-staging.yml
+service_name: kk-api
+service_port: 3000
+env_file: "{{ config_dir }}/api.env"
+hardening_tier: standard

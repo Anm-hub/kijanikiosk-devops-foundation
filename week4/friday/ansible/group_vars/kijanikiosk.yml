@@ -1,0 +1,14 @@
+---
+# group_vars/kijanikiosk.yml
+# Shared across all three servers. Per-host values (service_name,
+# service_port) live in host_vars/ instead -- see Challenge B and the
+# "no hardcoded values in task arguments" checklist item.
+
+ansible_user: ubuntu
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
+service_group: kijanikiosk
+base_dir: /opt/kijanikiosk
+config_dir: /opt/kijanikiosk/config
+log_dir: /opt/kijanikiosk/shared/logs
+health_dir: /opt/kijanikiosk/health

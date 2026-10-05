@@ -1,0 +1,14 @@
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Read complete after 0s [id=-][0m
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Read complete after 0s [id=-][0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Read complete after 0s [id=-][0m
+[0m[1mmodule.app_servers["api"].null_resource.server: Refreshing state... [id=8869558652807786060][0m
+[0m[1mmodule.app_servers["logs"].null_resource.server: Refreshing state... [id=5771743296708058334][0m
+[0m[1mmodule.app_servers["payments"].null_resource.server: Refreshing state... [id=6611684818442552340][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

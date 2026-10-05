@@ -1,0 +1,189 @@
+---
+- name: Configure KijaniKiosk servers
+  hosts: kijanikiosk
+  become: true
+  become_method: sudo
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Restart service
+      ansible.builtin.systemd:
+        name: "{{ service_name }}.service"
+        state: restarted
+      # Guarded implicitly: this handler only fires when the unit file
+      # task above reports changed, and that task only runs after the
+      # service account and directories already exist -- so the unit
+      # being present is guaranteed by task order, not by this handler.
+
+    - name: Restart journald
+      ansible.builtin.systemd:
+        name: systemd-journald
+        state: restarted
+
+  tasks:
+    # ======================================================================
+    # PHASE 1: PACKAGES
+    # ======================================================================
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - acl
+          - ufw
+          - curl
+        state: present
+        install_recommends: false
+
+    - name: Hold curl at current version
+      ansible.builtin.dpkg_selections:
+        name: curl
+        selection: hold
+
+    # ======================================================================
+    # PHASE 2: SERVICE ACCOUNTS
+    # ======================================================================
+    - name: Create kijanikiosk system group
+      ansible.builtin.group:
+        name: "{{ service_group }}"
+        system: true
+        state: present
+
+    - name: Create service account for this host
+      ansible.builtin.user:
+        name: "{{ service_name }}"
+        group: "{{ service_group }}"
+        system: true
+        shell: /usr/sbin/nologin
+        create_home: false
+        state: present
+
+    # ======================================================================
+    # PHASE 3: DIRECTORY STRUCTURE
+    # ======================================================================
+    # NOTE: Week 3 ran all three services on one shared server, so
+    # shared/logs carried cross-service ACL grants (kk-payments could
+    # read kk-api's logs for audit correlation). In Week 4 each service
+    # runs on its own dedicated VM -- there is no shared filesystem for
+    # a cross-service grant to attach to. Each VM's directories are
+    # owned solely by that VM's own service account. This is a
+    # deliberate architecture change, documented in
+    # hardening-decisions.md, not an oversight.
+    - name: Create KijaniKiosk directory tree
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ service_name }}"
+        group: "{{ service_group }}"
+        mode: "0750"
+      loop:
+        - "{{ base_dir }}"
+        - "{{ config_dir }}"
+        - "{{ log_dir }}"
+
+    - name: Create health check directory
+      ansible.builtin.file:
+        path: "{{ health_dir }}"
+        state: directory
+        owner: "{{ service_name }}"
+        group: "{{ service_group }}"
+        mode: "0750"
+
+    - name: Set default ACL on log directory so new files inherit access
+      ansible.posix.acl:
+        path: "{{ log_dir }}"
+        entity: "{{ service_name }}"
+        etype: user
+        permissions: rwx
+        default: true
+        state: present
+
+    # ======================================================================
+    # PHASE 4: ENVIRONMENT FILE AND SYSTEMD UNIT
+    # ======================================================================
+    - name: Deploy service environment file
+      ansible.builtin.template:
+        src: templates/env.j2
+        dest: "{{ env_file }}"
+        owner: "{{ service_name }}"
+        group: "{{ service_group }}"
+        mode: "0600"
+
+    - name: Deploy systemd unit file
+      ansible.builtin.template:
+        src: templates/service.unit.j2
+        dest: "/etc/systemd/system/{{ service_name }}.service"
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Reload systemd
+        - Restart service
+
+    - name: Enable and start service
+      ansible.builtin.systemd:
+        name: "{{ service_name }}.service"
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    # ======================================================================
+    # PHASE 5: FIREWALL
+    # ======================================================================
+    - name: Set ufw default deny incoming
+      community.general.ufw:
+        state: enabled
+        default: deny
+        direction: incoming
+
+    - name: Set ufw default allow outgoing
+      community.general.ufw:
+        default: allow
+        direction: outgoing
+
+    - name: Allow SSH
+      community.general.ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    - name: Allow service port from loopback only
+      community.general.ufw:
+        rule: allow
+        port: "{{ service_port | string }}"
+        proto: tcp
+        interface: lo
+        direction: in
+
+    # ======================================================================
+    # PHASE 6: JOURNAL PERSISTENCE
+    # ======================================================================
+    - name: Create persistent journal directory
+      ansible.builtin.file:
+        path: /var/log/journal
+        state: directory
+        mode: "0755"
+
+    - name: Configure journald persistent storage cap
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/journald.conf
+        regexp: '^#?SystemMaxUse='
+        line: 'SystemMaxUse=500M'
+      notify: Restart journald
+
+    # ======================================================================
+    # PHASE 7: LOGROTATE
+    # ======================================================================
+    - name: Deploy logrotate configuration
+      ansible.builtin.template:
+        src: templates/logrotate.j2
+        dest: /etc/logrotate.d/kijanikiosk
+        owner: root
+        group: root
+        mode: "0644"
