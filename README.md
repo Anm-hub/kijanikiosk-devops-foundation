@@ -1,6 +1,6 @@
 # KijaniKiosk DevOps Foundation
 
-This repository contains the DevOps foundation work for the KijaniKiosk platform. The project is developed using a Git branch workflow to demonstrate collaboration, controlled integration, and progressive delivery.
+This repository contains the DevOps foundation work for the KijaniKiosk platform. The project is developed using a Git branch workflow to demonstrate collaboration, controlled integration, infrastructure automation, and progressive delivery.
 
 ## Repository Workflow
 
@@ -61,13 +61,67 @@ It was submitted through **Pull Request #2** targeting:
 
 The pull request contains the complete Week 3 production foundation work.
 
+## Week 4 — KijaniKiosk Full IaC Pipeline
+
+The Week 4 deliverables are located on the branch:
+
+`feature/week4-iac-pipeline`
+
+inside:
+
+`week4/friday/`
+
+Week 4 extends the production foundation into a full Infrastructure-as-Code and configuration-management pipeline using Terraform and Ansible.
+
+The primary lab environment uses:
+
+* Multipass Ubuntu 22.04 virtual machines for the API, payments, and logs servers.
+* Local MinIO as the S3-compatible remote Terraform state backend.
+* Terraform for infrastructure discovery, SSH connectivity validation, state management, and outputs.
+* Ansible for repeatable seven-phase server configuration.
+* Systemd, UFW, journald, logrotate, and least-privilege service accounts for production hardening.
+
+### Week 4 Key Deliverables
+
+The `week4/friday/` folder contains:
+
+* `terraform/` — Terraform root configuration and reusable `app_server` module.
+* `ansible/` — Ansible playbook, inventory, group variables, host variables, and templates.
+* `pipeline.sh` — Automated Terraform-to-Ansible deployment pipeline.
+* `pipeline-run1.log` — Evidence from the first clean pipeline run.
+* `pipeline-run2.log` — Evidence from the second clean pipeline run.
+* `week4-second-plan-proof.txt` — Terraform no-change plan evidence.
+* `hardening-decisions.md` — Nia-facing security and hardening decisions.
+* `environment-setup.md` — Lab environment, tooling, and setup documentation.
+* `destroy-output.txt` — Terraform destroy evidence and explanation of the local VM lifecycle.
+* `reflection.md` — Week 4 project reflection.
+
+### Week 4 Verification Evidence
+
+The pipeline was executed twice successfully.
+
+The second Terraform run reported that the infrastructure matched the configuration with no changes. The Ansible repeat run reported `changed=0` on all three servers, demonstrating idempotent configuration.
+
+The `kk-payments` service was also verified as active with a documented `systemd-analyze security` score of **1.4**, satisfying the required Week 4 security target.
+
+The Week 4 environment intentionally documents the limitation that local MinIO provides S3-compatible remote state but does not provide native Terraform state locking. Production alternatives are documented in the Week 4 hardening decisions.
+
+### Week 4 Git Evidence
+
+The Week 4 work was developed on:
+
+`feature/week4-iac-pipeline`
+
+It was submitted through **Pull Request #3** targeting:
+
+`develop`
+
 ## Repository Structure
 
 ```text
 kijanikiosk-devops-foundation/
 │
 ├── README.md
-│
 ├── starter-kit/
 │   ├── delivery-notes.md
 │   ├── cloud-model.md
@@ -76,23 +130,38 @@ kijanikiosk-devops-foundation/
 │   ├── network-topology.png
 │   └── reflection.md
 │
-└── week3/
+├── week3/
+│   └── friday/
+│       ├── kijanikiosk-provision.sh
+│       ├── pre-provisioning-audit.txt
+│       ├── provision-run-dirty.log
+│       ├── provision-run-clean.log
+│       ├── access-model-final.md
+│       ├── kk-payments-hardening.md
+│       ├── hardening-decisions.md
+│       ├── post-remediation-verification.txt
+│       ├── integration-notes.md
+│       └── screenshots/
+│
+└── week4/
     └── friday/
-        ├── kijanikiosk-provision.sh
-        ├── pre-provisioning-audit.txt
-        ├── provision-run-dirty.log
-        ├── provision-run-clean.log
-        ├── access-model-final.md
-        ├── kk-payments-hardening.md
+        ├── terraform/
+        ├── ansible/
+        ├── pipeline.sh
+        ├── pipeline-run1.log
+        ├── pipeline-run2.log
+        ├── week4-second-plan-proof.txt
         ├── hardening-decisions.md
-        ├── post-remediation-verification.txt
-        ├── integration-notes.md
-        └── screenshots/
-```
+        ├── environment-setup.md
+        ├── destroy-output.txt
+        └── reflection.md
 
-## Submission Note
+##Submission Note
 
-The project follows a feature-branch → `develop` workflow for weekly deliverables. The `main` branch currently serves as the initial repository baseline and contains this documentation to make the location of weekly work clear.
+The project follows a feature-branch workflow for weekly deliverables.
 
-For assessment, please select the relevant branch shown above to view the corresponding weekly deliverables.
+Week 2 → feature/starter-kit-files
+Week 3 → feature/week3-production-foundation 
+Week 4 → feature/week4-iac-pipeline 
 
+The main branch currently serves as the repository documentation and baseline. For assessment, please select the relevant branch shown above to view the corresponding weekly deliverables.
