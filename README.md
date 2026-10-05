@@ -4,13 +4,31 @@ This repository contains the DevOps foundation work for the KijaniKiosk platform
 
 ## Repository Workflow
 
-The repository uses the following branch structure:
+The repository follows a feature-branch → `develop` workflow for weekly deliverables. Each week's work is developed and tested on its own feature branch before being submitted for integration into `develop`.
 
-* `main` — Initial repository baseline and project documentation.
-* `develop` — Integration branch containing completed weekly work.
-* `feature/*` — Feature branches used to develop individual weekly deliverables before integration.
+### Branch Structure
 
-Weekly work is therefore not necessarily located directly on `main`. The README provides the locations of the completed and current work.
+The repository currently contains the following feature branches:
+
+* `feature/starter-kit-files` — Contains the **Week 2 DevOps Foundation** work, including cloud model selection, region and availability-zone reasoning, least-privilege IAM, network topology, and Flow/Feedback/Learning documentation.
+* `feature/week3-production-foundation` — Contains the **Week 3 Production Server Foundation** work, including the idempotent provisioning script, system hardening, service accounts, systemd configuration, firewall rules, journald, logrotate, verification evidence, and integration documentation.
+* `feature/week4-iac-pipeline` — Contains the **Week 4 Full IaC Pipeline** work, including Terraform, Ansible, the automated Terraform-to-Ansible pipeline, remote state configuration, server hardening, idempotency evidence, and deployment verification.
+
+The main repository branches have the following roles:
+
+* `main` — Repository baseline and project documentation. The README is maintained here to provide a clear guide to the weekly deliverables and their respective branches.
+* `develop` — Integration branch. **Week 2 is currently the only weekly deliverable merged into this branch.**
+* `feature/*` — Feature branches used to develop, test, document, and submit individual weekly deliverables before integration.
+
+### Weekly Integration Status
+
+| Week | Feature Branch | Pull Request | Integration Status |
+|---|---|---|---|
+| Week 2 | `feature/starter-kit-files` | PR #1 | Merged into `develop` |
+| Week 3 | `feature/week3-production-foundation` | PR #2 | Open, targeting `develop` |
+| Week 4 | `feature/week4-iac-pipeline` | PR #3 | Open, targeting `develop` |
+
+Weekly work is therefore intentionally kept on its respective feature branch until the corresponding pull request is integrated into `develop`. The sections below identify the location and contents of each week's work.
 
 ## Week 2 — KijaniKiosk DevOps Foundation
 
