@@ -1,0 +1,6 @@
+---
+# host_vars/logs-staging.yml
+service_name: kk-logs
+service_port: 5000
+env_file: "{{ config_dir }}/logs.env"
+hardening_tier: standard

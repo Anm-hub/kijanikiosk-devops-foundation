@@ -1,0 +1,80 @@
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Read complete after 1s [id=-][0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Read complete after 1s [id=-][0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Read complete after 1s [id=-][0m
+[0m[1mmodule.app_servers["logs"].null_resource.server: Refreshing state... [id=5771743296708058334][0m
+[0m[1mmodule.app_servers["api"].null_resource.server: Refreshing state... [id=8869558652807786060][0m
+[0m[1mmodule.app_servers["payments"].null_resource.server: Refreshing state... [id=6611684818442552340][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [31m-[0m destroy[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.app_servers["api"].null_resource.server[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "null_resource" "server" {
+      [31m-[0m[0m id       = "8869558652807786060" [90m-> null[0m[0m
+      [31m-[0m[0m triggers = {
+          [31m-[0m[0m "name"  = "api"
+          [31m-[0m[0m "vm_ip" = "10.144.203.6"
+        } [90m-> null[0m[0m
+    }
+
+[1m  # module.app_servers["logs"].null_resource.server[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "null_resource" "server" {
+      [31m-[0m[0m id       = "5771743296708058334" [90m-> null[0m[0m
+      [31m-[0m[0m triggers = {
+          [31m-[0m[0m "name"  = "logs"
+          [31m-[0m[0m "vm_ip" = "10.144.203.110"
+        } [90m-> null[0m[0m
+    }
+
+[1m  # module.app_servers["payments"].null_resource.server[0m will be [1m[31mdestroyed[0m
+[0m  [31m-[0m[0m resource "null_resource" "server" {
+      [31m-[0m[0m id       = "6611684818442552340" [90m-> null[0m[0m
+      [31m-[0m[0m triggers = {
+          [31m-[0m[0m "name"  = "payments"
+          [31m-[0m[0m "vm_ip" = "10.144.203.69"
+        } [90m-> null[0m[0m
+    }
+
+[1mPlan:[0m [0m0 to add, 0 to change, 3 to destroy.
+
+Changes to Outputs:
+  [31m-[0m[0m api_server_ip        = "10.144.203.6" [90m-> null[0m[0m
+  [31m-[0m[0m api_ssh_command      = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.6" [90m-> null[0m[0m
+  [31m-[0m[0m logs_server_ip       = "10.144.203.110" [90m-> null[0m[0m
+  [31m-[0m[0m logs_ssh_command     = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.110" [90m-> null[0m[0m
+  [31m-[0m[0m payments_server_ip   = "10.144.203.69" [90m-> null[0m[0m
+  [31m-[0m[0m payments_ssh_command = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.69" [90m-> null[0m[0m
+[0m[1mmodule.app_servers["payments"].null_resource.server: Destroying... [id=6611684818442552340][0m[0m
+[0m[1mmodule.app_servers["logs"].null_resource.server: Destroying... [id=5771743296708058334][0m[0m
+[0m[1mmodule.app_servers["api"].null_resource.server: Destroying... [id=8869558652807786060][0m[0m
+[0m[1mmodule.app_servers["payments"].null_resource.server: Destruction complete after 0s[0m
+[0m[1mmodule.app_servers["logs"].null_resource.server: Destruction complete after 0s[0m
+[0m[1mmodule.app_servers["api"].null_resource.server: Destruction complete after 0s[0m
+[0m[1m[32m
+Destroy complete! Resources: 3 destroyed.[0m
+
+--- POST-DESTROY VERIFICATION ---
+
+$ multipass list
+kijanikiosk-api         Running           10.144.203.6     Ubuntu 22.04 LTS
+kijanikiosk-logs        Running           10.144.203.110   Ubuntu 22.04 LTS
+kijanikiosk-payments    Running           10.144.203.69    Ubuntu 22.04 LTS
+
+$ terraform state list
+(empty - confirms clean teardown of all Terraform-managed resources)
+
+NOTE: The Multipass VMs remain running after `terraform destroy`. This
+is expected, not a failure. Terraform never created these VMs -- they
+were launched directly with `multipass launch` before any Terraform
+command ran (there is no Multipass provider for Terraform). The
+null_resource in this module only represents Terraform's connection
+*to* an already-existing VM; destroying it removes that connection
+record from state, not the VM itself. Tearing down the VMs is a
+separate, manual step (`multipass delete <name> && multipass purge`)
+outside Terraform's responsibility in this architecture.

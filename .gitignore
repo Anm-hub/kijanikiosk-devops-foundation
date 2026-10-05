@@ -1,0 +1,11 @@
+# Terraform
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Local MinIO data
+minio-data/
+
+# Ansible generated/runtime files
+*.retry

@@ -1,0 +1,165 @@
+=== PIPELINE STEP 1: terraform apply ===
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Reading...[0m[0m
+[0m[1mmodule.app_servers["api"].data.external.vm_ip: Read complete after 0s [id=-][0m
+[0m[1mmodule.app_servers["payments"].data.external.vm_ip: Read complete after 0s [id=-][0m
+[0m[1mmodule.app_servers["logs"].data.external.vm_ip: Read complete after 1s [id=-][0m
+[0m[1mmodule.app_servers["logs"].null_resource.server: Refreshing state... [id=5771743296708058334][0m
+[0m[1mmodule.app_servers["payments"].null_resource.server: Refreshing state... [id=6611684818442552340][0m
+[0m[1mmodule.app_servers["api"].null_resource.server: Refreshing state... [id=8869558652807786060][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.[0m
+[0m[1m[32m
+Outputs:
+
+[0mapi_server_ip = "10.144.203.6"
+api_ssh_command = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.6"
+logs_server_ip = "10.144.203.110"
+logs_ssh_command = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.110"
+payments_server_ip = "10.144.203.69"
+payments_ssh_command = "ssh -i ~/.ssh/id_rsa ubuntu@10.144.203.69"
+
+=== PIPELINE STEP 2: extract IPs from Terraform outputs ===
+api_server_ip:      10.144.203.6
+payments_server_ip: 10.144.203.69
+logs_server_ip:     10.144.203.110
+
+=== PIPELINE STEP 3: write inventory.ini ===
+inventory.ini written to /home/anamwangi/kijanikiosk-ansible/inventory.ini
+[kijanikiosk_api]
+api-staging ansible_host=10.144.203.6
+
+[kijanikiosk_payments]
+payments-staging ansible_host=10.144.203.69
+
+[kijanikiosk_logs]
+logs-staging ansible_host=10.144.203.110
+
+[kijanikiosk:children]
+kijanikiosk_api
+kijanikiosk_payments
+kijanikiosk_logs
+
+[kijanikiosk:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+=== PIPELINE STEP 4: ansible-playbook ===
+
+PLAY [Configure KijaniKiosk servers] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+TASK [Update apt cache] ********************************************************
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Install required packages] ***********************************************
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Hold curl at current version] ********************************************
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Create kijanikiosk system group] *****************************************
+ok: [payments-staging]
+ok: [api-staging]
+ok: [logs-staging]
+
+TASK [Create service account for this host] ************************************
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Create KijaniKiosk directory tree] ***************************************
+ok: [logs-staging] => (item=/opt/kijanikiosk)
+ok: [payments-staging] => (item=/opt/kijanikiosk)
+ok: [api-staging] => (item=/opt/kijanikiosk)
+ok: [logs-staging] => (item=/opt/kijanikiosk/config)
+ok: [payments-staging] => (item=/opt/kijanikiosk/config)
+ok: [api-staging] => (item=/opt/kijanikiosk/config)
+ok: [logs-staging] => (item=/opt/kijanikiosk/shared/logs)
+ok: [payments-staging] => (item=/opt/kijanikiosk/shared/logs)
+ok: [api-staging] => (item=/opt/kijanikiosk/shared/logs)
+
+TASK [Create health check directory] *******************************************
+ok: [logs-staging]
+ok: [payments-staging]
+ok: [api-staging]
+
+TASK [Set default ACL on log directory so new files inherit access] ************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: Importing 'to_native' from 'ansible.module_utils._text' is deprecated. This feature will be removed from ansible-core version 2.24. Use ansible.module_utils.common.text.converters instead.
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Deploy service environment file] *****************************************
+ok: [api-staging]
+ok: [payments-staging]
+ok: [logs-staging]
+
+TASK [Deploy systemd unit file] ************************************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+TASK [Enable and start service] ************************************************
+ok: [payments-staging]
+ok: [logs-staging]
+ok: [api-staging]
+
+TASK [Set ufw default deny incoming] *******************************************
+ok: [logs-staging]
+ok: [api-staging]
+ok: [payments-staging]
+
+TASK [Set ufw default allow outgoing] ******************************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+TASK [Allow SSH] ***************************************************************
+ok: [api-staging]
+ok: [payments-staging]
+ok: [logs-staging]
+
+TASK [Allow service port from loopback only] ***********************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+TASK [Create persistent journal directory] *************************************
+ok: [api-staging]
+ok: [payments-staging]
+ok: [logs-staging]
+
+TASK [Configure journald persistent storage cap] *******************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+TASK [Deploy logrotate configuration] ******************************************
+ok: [api-staging]
+ok: [logs-staging]
+ok: [payments-staging]
+
+PLAY RECAP *********************************************************************
+api-staging                : ok=19   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+logs-staging               : ok=19   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+payments-staging           : ok=19   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+=== PIPELINE COMPLETE: Terraform + Ansible ran successfully ===

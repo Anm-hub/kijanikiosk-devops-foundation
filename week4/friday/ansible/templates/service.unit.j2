@@ -1,0 +1,56 @@
+[Unit]
+Description=KijaniKiosk {{ service_name }} Service
+After=network.target
+{% if service_name == "kk-payments" %}
+After=network.target kk-api.service
+Wants=kk-api.service
+{% endif %}
+
+[Service]
+Type=simple
+User={{ service_name }}
+Group={{ service_group }}
+WorkingDirectory={{ base_dir }}
+EnvironmentFile={{ env_file }}
+ExecStart=/usr/bin/sleep infinity
+Restart=on-failure
+
+# --- Hardening ---
+# Reproduces the directives validated in Week 3's kk-payments-hardening.md.
+# "strict" tier (kk-payments): target <2.5, verified score 1.4.
+# "standard" tier (kk-api, kk-logs): target <3.5, verified score 1.9.
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectClock=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictNamespaces=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RemoveIPC=true
+NoNewPrivileges=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+CapabilityBoundingSet=
+ReadWritePaths={{ log_dir }}
+{% if hardening_tier == "strict" %}
+UMask=0077
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+IPAddressDeny=any
+IPAddressAllow=localhost
+IPAddressAllow=10.0.1.0/24
+{% else %}
+UMask=0027
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

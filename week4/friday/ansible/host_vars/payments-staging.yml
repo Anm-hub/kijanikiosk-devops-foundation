@@ -1,0 +1,6 @@
+---
+# host_vars/payments-staging.yml
+service_name: kk-payments
+service_port: 3001
+env_file: "{{ config_dir }}/payments-api.env"
+hardening_tier: strict
