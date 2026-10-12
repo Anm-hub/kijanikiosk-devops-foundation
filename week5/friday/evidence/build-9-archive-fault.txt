@@ -1,0 +1,191 @@
+Started by an SCM change
+Obtained Jenkinsfile from git https://github.com/Anm-hub/kijanikiosk-payments.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/kijanikiosk-payments
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/Anm-hub/kijanikiosk-payments.git
+ > git init /var/jenkins_home/workspace/kijanikiosk-payments # timeout=10
+Fetching upstream changes from https://github.com/Anm-hub/kijanikiosk-payments.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --tags --force --progress -- https://github.com/Anm-hub/kijanikiosk-payments.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/Anm-hub/kijanikiosk-payments.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision d39831cffc41d08d6ed38e9a64eb33c2ce172c77 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f d39831cffc41d08d6ed38e9a64eb33c2ce172c77 # timeout=10
+Commit message: "test(fault): archive-fault"
+ > git rev-list --no-walk d3f9ae2aec5e52824618089b531c12c31af54066 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18.20.8-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 227d658d644933bf9977eeb138f6ed720c413de7b0fd3f6bac853f9168541852
+$ docker run -t -d -u 1000:1000 --network ci-net -w /var/jenkins_home/workspace/kijanikiosk-payments --volumes-from 227d658d644933bf9977eeb138f6ed720c413de7b0fd3f6bac853f9168541852 -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18.20.8-alpine cat
+$ docker top 3f478e62c700179436f39e441909f3e925132308dce67f1634bb950cd8328a06 -eo pid,comm
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] timeout
+Timeout set to expire in 15 min
+[Pipeline] {
+[Pipeline] timestamps
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] sh
+[2026-10-12T17:11:15.240Z] + npm ci
+[2026-10-12T17:11:18.468Z] npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+[2026-10-12T17:11:23.666Z] npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[2026-10-12T17:11:23.666Z] npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[2026-10-12T17:11:33.545Z] npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] added 336 packages, and audited 337 packages in 39s
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] 35 vulnerabilities (7 moderate, 28 high)
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] To address issues that do not require attention, run:
+[2026-10-12T17:11:55.346Z]   npm audit fix
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] To address all issues (including breaking changes), run:
+[2026-10-12T17:11:55.346Z]   npm audit fix --force
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] Run `npm audit` for details.
+[2026-10-12T17:11:55.346Z] + npm run lint
+[2026-10-12T17:11:55.346Z] 
+[2026-10-12T17:11:55.346Z] > kijanikiosk-payments@1.1.0 lint
+[2026-10-12T17:11:55.346Z] > eslint src test scripts
+[2026-10-12T17:11:55.346Z] 
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
+[2026-10-12T17:11:55.885Z] + npm run build
+[2026-10-12T17:11:56.136Z] 
+[2026-10-12T17:11:56.136Z] > kijanikiosk-payments@1.1.0 build
+[2026-10-12T17:11:56.136Z] > node scripts/build.js
+[2026-10-12T17:11:56.136Z] 
+[2026-10-12T17:11:56.136Z] Built 3 files into dist/: index.js, payments.js, server.js
+[2026-10-12T17:11:56.136Z] + test -d dist
+[2026-10-12T17:11:56.136Z] + ls -A dist
+[2026-10-12T17:11:56.136Z] + '[' -n 'index.js
+[2026-10-12T17:11:56.136Z] payments.js
+[2026-10-12T17:11:56.136Z] server.js' ]
+[2026-10-12T17:11:56.136Z] + ls dist
+[2026-10-12T17:11:56.136Z] + wc -l
+[2026-10-12T17:11:56.136Z] + echo 'Build output: 3 files in dist/'
+[2026-10-12T17:11:56.136Z] Build output: 3 files in dist/
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Verify)
+[Pipeline] parallel
+[Pipeline] { (Branch: Test)
+[Pipeline] { (Branch: Security Audit)
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] stage
+[Pipeline] { (Security Audit)
+[Pipeline] sh
+[Pipeline] sh
+[2026-10-12T17:11:56.767Z] + npm test
+[2026-10-12T17:11:56.801Z] + npm audit '--omit=dev' '--audit-level=high'
+[2026-10-12T17:11:57.018Z] 
+[2026-10-12T17:11:57.018Z] > kijanikiosk-payments@1.1.0 test
+[2026-10-12T17:11:57.018Z] > jest
+[2026-10-12T17:11:57.018Z] 
+[2026-10-12T17:11:57.351Z] found 0 vulnerabilities
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[2026-10-12T17:11:58.361Z] PASS test/payments.test.js
+[2026-10-12T17:11:58.361Z]   calculateFee
+[2026-10-12T17:11:58.361Z]     ✓ applies the rate and rounds to whole cents (3 ms)
+[2026-10-12T17:11:58.361Z]     ✓ rejects non-positive amounts (10 ms)
+[2026-10-12T17:11:58.361Z]     ✓ rejects rates outside 0 to 1 (2 ms)
+[2026-10-12T17:11:58.361Z]   validatePayment
+[2026-10-12T17:11:58.361Z]     ✓ accepts a valid payment (1 ms)
+[2026-10-12T17:11:58.361Z]     ✓ rejects an unsupported currency
+[2026-10-12T17:11:58.361Z]     ✓ rejects a non-object
+[2026-10-12T17:11:58.361Z]   formatAmount
+[2026-10-12T17:11:58.361Z]     ✓ formats cents as a currency string
+[2026-10-12T17:11:58.361Z]     ✓ pads single-digit cents (1 ms)
+[2026-10-12T17:11:58.361Z]     ✓ rejects negative amounts (2 ms)
+[2026-10-12T17:11:58.361Z] 
+[2026-10-12T17:11:58.361Z] Test Suites: 1 passed, 1 total
+[2026-10-12T17:11:58.361Z] Tests:       9 passed, 9 total
+[2026-10-12T17:11:58.361Z] Snapshots:   0 total
+[2026-10-12T17:11:58.361Z] Time:        0.552 s
+[2026-10-12T17:11:58.361Z] Ran all test suites.
+Post stage
+[Pipeline] junit
+[2026-10-12T17:11:58.414Z] Recording test results
+[2026-10-12T17:11:58.432Z] [Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Archive)
+[Pipeline] archiveArtifacts
+[2026-10-12T17:11:58.814Z] Archiving artifacts
+[2026-10-12T17:11:58.817Z] ‘fault-injection-missing/**’ doesn’t match anything, but ‘**’ does. Perhaps that’s what you mean?
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Publish)
+Stage "Publish" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+[2026-10-12T17:11:59.329Z] [WS-CLEANUP] Deleting project workspace...
+[2026-10-12T17:11:59.329Z] [WS-CLEANUP] Deferred wipeout is used...
+[2026-10-12T17:11:59.345Z] [WS-CLEANUP] done
+[Pipeline] echo
+[2026-10-12T17:11:59.397Z] STATUS CHANGED to FAILURE: kijanikiosk-payments #9
+[Pipeline] echo
+[2026-10-12T17:11:59.453Z] FAILED: kijanikiosk-payments build #9 - http://localhost:8090/job/kijanikiosk-payments/9/console
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // timestamps
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+$ docker stop --time=1 3f478e62c700179436f39e441909f3e925132308dce67f1634bb950cd8328a06
+$ docker rm -f --volumes 3f478e62c700179436f39e441909f3e925132308dce67f1634bb950cd8328a06
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: No artifacts found that match the file pattern "fault-injection-missing/**". Configuration error?
+Finished: FAILURE
