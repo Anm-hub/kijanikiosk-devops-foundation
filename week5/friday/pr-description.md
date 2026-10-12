@@ -1,0 +1,3 @@
+# Pull Request Description
+
+This change adds the KijaniKiosk payments CI pipeline and its Week 5 evidence, including a successful pipeline log, five controlled fault-injection logs, recovery results, the Nexus versions screenshot, the board-ready delivery document and a credential audit. One design decision I am confident in is using a package version combined with a short Git commit identifier so published artifacts can be traced back to their source revision. My next addition would be stronger automated security reporting and clearer retention of test and audit reports, followed by validation in a more production-like environment.
