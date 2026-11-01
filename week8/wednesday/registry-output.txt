@@ -1,0 +1,30 @@
+KijaniKiosk Payments - Wednesday Registry Verification
+
+Registry: GitHub Container Registry (GHCR)
+Image: ghcr.io/anm-hub/kijanikiosk-payments:1.1.0-f06b02a
+
+Build and push:
+Result: SUCCESS
+Image pushed successfully to GHCR.
+
+Image digest:
+sha256:36953a6ff9d84ce78096261bcca1702bd99b121f92e4f2f638eb7714159e6013
+
+Fresh pull verification:
+Local final image tag removed before pulling.
+docker pull completed successfully.
+Result: PASS
+
+Fresh image runtime verification:
+Container started successfully.
+Docker health status: healthy
+Health endpoint: {"status":"ok","version":"1.1.0"}
+Result: PASS
+
+Image size:
+Docker disk usage: 82MB
+Docker content size: 21.8MB
+
+Registry authentication:
+Authenticated using GitHub CLI token.
+No registry credentials stored in the repository.

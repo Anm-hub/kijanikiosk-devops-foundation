@@ -1,0 +1,47 @@
+KijaniKiosk Payments - Thursday Kubernetes Verification
+
+Deployment:
+Name: kk-payments
+Replicas: 2
+Rollout: Successfully completed within 180 seconds.
+
+Pod verification:
+kk-payments-96b6b5899-8wl8h
+Status: Running
+Ready: 1/1
+IP: 10.244.0.3
+
+kk-payments-96b6b5899-c86pq
+Status: Running
+Ready: 1/1
+IP: 10.244.0.5
+
+Service:
+Name: kk-payments-service
+Type: NodePort
+Port: 3001
+Target port: 3001
+NodePort: 30001
+
+Service endpoints:
+10.244.0.3:3001
+10.244.0.5:3001
+
+External health check:
+URL: http://192.168.49.2:30001/health
+Response: {"status":"ok","version":"1.1.0"}
+Result: PASS
+
+In-cluster DNS health check:
+URL: http://kk-payments-service.default.svc.cluster.local:3001/health
+Response: {"status":"ok","version":"1.1.0"}
+Result: PASS
+
+Self-healing:
+Deleted Pod: kk-payments-96b6b5899-5tgsh
+Replacement Pod: kk-payments-96b6b5899-c86pq
+T0: 2026-11-01T23:42:54+03:00
+T1: 2026-11-01T23:46:42+03:00
+Observed recovery interval: 228 seconds
+Replacement Pod reached Running and Ready (1/1).
+Result: PASS
