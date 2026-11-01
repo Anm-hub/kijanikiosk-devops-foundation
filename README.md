@@ -1,19 +1,22 @@
 # KijaniKiosk DevOps Foundation
 
-This repository contains the DevOps foundation work for the KijaniKiosk platform. The project uses a Git feature-branch workflow to demonstrate collaboration, infrastructure automation, continuous integration, controlled integration, security, and progressive delivery.
+This repository contains the DevOps foundation work for the KijaniKiosk platform. The project uses a Git feature-branch workflow to demonstrate collaboration, infrastructure automation, continuous integration, controlled integration, security, containerisation, and progressive delivery.
 
 ## Repository Workflow
 
-Each week's deliverables are developed and documented on a dedicated feature branch. The work is then submitted through a pull request targeting `develop`. The `main` branch maintains the repository overview and documentation, while `develop` serves as the integration branch.
+Weekly deliverables are developed and documented on dedicated feature branches. Each completed week's work is submitted through a pull request targeting `develop`.
 
-### Branch Structure
+The `main` branch maintains the repository overview and navigation documentation, while `develop` serves as the integration branch. Feature branches preserve the work completed for each weekly project.
+
+## Branch Structure
 
 The repository includes the following weekly feature branches:
 
-- `feature/starter-kit-files` — **Contains the Week 2: DevOps Foundation work**, covering cloud service models, region and availability-zone selection, least-privilege IAM, network topology, and Flow, Feedback, and Learning.
-- `feature/week3-production-foundation` — **Contains the Week 3: Production Server Foundation work**, covering idempotent provisioning, system hardening, service accounts, systemd, firewall rules, journald, logrotate, and verification evidence.
-- `feature/week4-iac-pipeline` — **Contains the Week 4: Full Infrastructure-as-Code Pipeline work**, covering Terraform, Ansible, remote state configuration, automated infrastructure provisioning, server hardening, idempotency, and deployment verification.
-- `feature/week5-ci-pipeline` — **Contains the Week 5: Board-Ready CI Pipeline work**, covering the Jenkins continuous integration pipeline, parallel testing and security auditing, artifact archiving and publishing, fault injection, recovery evidence, credential auditing, and board-facing documentation.
+- `feature/starter-kit-files` — Week 2: DevOps Foundation. Covers cloud service models, region and availability-zone selection, least-privilege IAM, network topology, and Flow, Feedback, and Learning.
+- `feature/week3-production-foundation` — Week 3: Production Server Foundation. Covers idempotent provisioning, system hardening, service accounts, systemd, firewall rules, journald, logrotate, and verification evidence.
+- `feature/week4-iac-pipeline` — Week 4: Full Infrastructure-as-Code Pipeline. Covers Terraform, Ansible, remote state configuration, automated infrastructure provisioning, server hardening, idempotency, and deployment verification.
+- `feature/week5-ci-pipeline` — Week 5: Board-Ready CI Pipeline. Covers Jenkins continuous integration, parallel testing and security auditing, artifact archiving and publishing, fault injection, recovery evidence, credential auditing, and board-facing documentation.
+- `feature/week8-container-delivery` — Week 8: Container Delivery Pipeline. Covers production container builds, image verification, private registry publishing, Kubernetes deployment, service exposure, service discovery, and self-healing verification.
 
 The main repository branches have the following roles:
 
@@ -21,16 +24,19 @@ The main repository branches have the following roles:
 - `develop` — Integration branch for weekly deliverables submitted through pull requests.
 - `feature/*` — Feature branches used to develop, test, document, and submit individual weekly deliverables.
 
-### Weekly Integration Status
+## Weekly Pull Request Status
 
-| Week | Feature Branch | Pull Request | Integration Status |
+| Week | Feature Branch | Pull Request | Status |
 |---|---|---|---|
 | Week 2 | `feature/starter-kit-files` | PR #1 | Merged into `develop` |
-| Week 3 | `feature/week3-production-foundation` | PR #2 | Open, targeting `develop` |
-| Week 4 | `feature/week4-iac-pipeline` | PR #3 | Open, targeting `develop` |
-| Week 5 | `feature/week5-ci-pipeline` | PR #4 | Open, targeting `develop` |
+| Week 3 | `feature/week3-production-foundation` | PR #2 | Open |
+| Week 4 | `feature/week4-iac-pipeline` | PR #3 | Open |
+| Week 5 | `feature/week5-ci-pipeline` | PR #4 | Open |
+| Week 8 | `feature/week8-container-delivery` | PR #5 | Open |
 
-The status table reflects the current known state of the pull requests. Weekly deliverables remain on their respective feature branches until integrated into `develop`.
+The pull requests for Weeks 3, 4, 5, and 8 were submitted targeting `develop` and remain open. Week 2 is the only project currently merged into `develop`.
+
+---
 
 ## Week 2 — KijaniKiosk DevOps Foundation
 
@@ -57,7 +63,7 @@ The Week 3 deliverables are located on:
 
 `feature/week3-production-foundation`
 
-inside:
+Inside:
 
 `week3/friday/`
 
@@ -65,7 +71,7 @@ The folder contains the production provisioning script, execution logs, system-h
 
 ### Week 3 Git Evidence
 
-The work was developed on `feature/week3-production-foundation` and submitted through PR #2 targeting `develop`.
+The work was developed on `feature/week3-production-foundation` and submitted through PR #2 targeting `develop`. The pull request remains open.
 
 ## Week 4 — KijaniKiosk Full IaC Pipeline
 
@@ -73,7 +79,7 @@ The Week 4 deliverables are located on:
 
 `feature/week4-iac-pipeline`
 
-inside:
+Inside:
 
 `week4/friday/`
 
@@ -91,7 +97,7 @@ The primary lab environment uses:
 
 The `week4/friday/` folder contains:
 
-- `terraform/` — Terraform root configuration and reusable `app_server` module.
+- `terraform/` — Terraform root configuration and reusable app_server module.
 - `ansible/` — Ansible playbook, inventory, group variables, host variables, and templates.
 - `pipeline.sh` — Automated Terraform-to-Ansible deployment pipeline.
 - `pipeline-run1.log` — Evidence from the first pipeline run.
@@ -106,13 +112,13 @@ The `week4/friday/` folder contains:
 
 The pipeline was executed twice successfully. The second Terraform run reported no infrastructure changes, while the repeated Ansible run reported `changed=0` on all three servers, demonstrating idempotent configuration.
 
-The `kk-payments` service was verified as active, with a documented `systemd-analyze security` score of **1.4**, meeting the required Week 4 security target.
+The `kk-payments` service was verified as active, with a documented `systemd-analyze security` score of 1.4, meeting the required Week 4 security target.
 
 The documentation also explains the limitation that local MinIO provides an S3-compatible remote state backend but does not provide native Terraform state locking. Production alternatives are documented in the Week 4 hardening decisions.
 
 ### Week 4 Git Evidence
 
-The work was developed on `feature/week4-iac-pipeline` and submitted through PR #3 targeting `develop`.
+The work was developed on `feature/week4-iac-pipeline` and submitted through PR #3 targeting `develop`. The pull request remains open.
 
 ## Week 5 — KijaniKiosk Board-Ready CI Pipeline
 
@@ -164,19 +170,59 @@ The credential audit documents its checks and their limitations. The security au
 
 ### Week 5 Git Evidence
 
-The work was developed on `feature/week5-ci-pipeline` and submitted through **PR #4**, targeting `develop`.
+The work was developed on `feature/week5-ci-pipeline` and submitted through PR #4 targeting `develop`. The pull request remains open.
 
-The pull request is intended to integrate the Week 5 CI pipeline and its supporting evidence into the repository's integration branch.
+## Week 8 — KijaniKiosk Container Delivery Pipeline
+
+The Week 8 deliverables are located on:
+
+`feature/week8-container-delivery`
+
+The weekly work is organised into:
+
+- `week8/monday/`
+- `week8/tuesday/`
+- `week8/wednesday/`
+- `week8/thursday/`
+- `week8/friday/`
+
+Week 8 extends the KijaniKiosk DevOps workflow into production container delivery. The project progresses from creating and verifying a production image to publishing it in a private registry, deploying it with multiple replicas, exposing the service, and testing automatic recovery when an application instance is removed.
+
+### Week 8 Key Deliverables
+
+- **Monday** — Initial container build configuration and Docker build-context exclusions.
+- **Tuesday** — Production multi-stage container build, image exclusions, and verification output.
+- **Wednesday** — Image tagging and private registry publishing script, with registry execution evidence.
+- **Thursday** — Deployment and service manifests, deployment output, and an initial self-healing test.
+- **Friday** — Consolidated production Dockerfile, deployment and service manifests, build verification, registry push and fresh-pull evidence, deployment output, service checks, self-healing rerun, comparison document, reflection, and PR summary.
+
+### Week 8 Verification Evidence
+
+The final production image was built and verified with a size of 82 MB, compared with the 274 MB baseline image. The image ran as a non-root user, and development tooling was excluded from the production image.
+
+The image was tagged using the application version and source Git commit identifier, published to a private registry, removed from the local image cache, and successfully pulled again.
+
+The application was deployed with two replicas. The service was exposed through a NodePort, and both external and in-cluster health checks returned a successful response. A self-healing test confirmed that the deployment replaced a manually deleted application instance and restored two ready replicas in 33 seconds.
+
+The Friday folder contains the supporting evidence and written assessment documents.
+
+For a detailed guide to the Week 8 folder structure and deliverables, see `week8/README.md` on the Week 8 feature branch.
+
+### Week 8 Git Evidence
+
+The work was developed on `feature/week8-container-delivery` and submitted through PR #5 targeting `develop`. The pull request remains open.
+
+---
 
 ## Repository Structure
 
-The following is a simplified overview of the repository's main files and weekly deliverables. Week 3, Week 4, and Week 5 content is shown on its respective feature branch; Week 2 is integrated into `develop`.
+The following is a simplified overview of the repository's main files and weekly deliverables. Week 3, Week 4, Week 5, and Week 8 content is documented on their respective feature branches. Week 2 is integrated into `develop`.
 
 ```text
 kijanikiosk-devops-foundation/
 │
 ├── README.md
-├── Jenkinsfile                         # Week 5 CI pipeline
+├── Jenkinsfile
 ├── starter-kit/                         # Week 2 deliverables
 │   ├── delivery-notes.md
 │   ├── cloud-model.md
@@ -187,16 +233,6 @@ kijanikiosk-devops-foundation/
 │
 ├── week3/
 │   └── friday/                          # Week 3 deliverables
-│       ├── kijanikiosk-provision.sh
-│       ├── pre-provisioning-audit.txt
-│       ├── provision-run-dirty.log
-│       ├── provision-run-clean.log
-│       ├── access-model-final.md
-│       ├── kk-payments-hardening.md
-│       ├── hardening-decisions.md
-│       ├── post-remediation-verification.txt
-│       ├── integration-notes.md
-│       └── screenshots/
 │
 ├── week4/
 │   └── friday/                          # Week 4 deliverables
@@ -220,6 +256,14 @@ kijanikiosk-devops-foundation/
         ├── credential-audit.txt
         ├── reflection.md
         └── pr-description.md
+
+week8/                                   # Week 8 deliverables
+    ├── monday/
+    ├── tuesday/
+    ├── wednesday/
+    ├── thursday/
+    ├── friday/
+    └── README.md
 ```
 
 ## Submission Note
@@ -230,5 +274,8 @@ The project uses a feature-branch workflow for weekly deliverables:
 - Week 3 → `feature/week3-production-foundation`
 - Week 4 → `feature/week4-iac-pipeline`
 - Week 5 → `feature/week5-ci-pipeline`
+- Week 8 → `feature/week8-container-delivery`
 
-The main branch currently serves as the repository documentation and baseline. For assessment, please select the relevant branch shown above to view the corresponding weekly deliverables.
+The `main` branch serves as the repository documentation and baseline. The `develop` branch serves as the integration branch. Each weekly pull request identifies the feature branch containing the relevant assessment work.
+
+For assessment, select the relevant branch shown above to view the corresponding weekly deliverables.
