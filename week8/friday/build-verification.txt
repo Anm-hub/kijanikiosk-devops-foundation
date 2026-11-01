@@ -1,0 +1,22 @@
+WEEK 8 FRIDAY - PRODUCTION IMAGE VERIFICATION
+
+Image: ghcr.io/anm-hub/kijanikiosk-payments:1.1.0-f06b02a
+Package version: 1.1.0
+Source Git commit: f06b02a
+
+Build:
+- Docker build --no-cache completed successfully.
+- Automated tests: 9/9 passed.
+- Build output: 3 files (index.js, payments.js, server.js).
+
+Image verification:
+- Docker disk usage: 82 MB.
+- Content size: 21.8 MB.
+- Runtime user: kijani.
+- TypeScript compiler: not installed.
+- Docker health status: healthy.
+- Health endpoint: {"status":"ok","version":"1.1.0"}.
+
+Security note:
+The builder reported 26 npm audit vulnerabilities (4 low and 22 moderate).
+These are recorded as a follow-up dependency-security improvement.
