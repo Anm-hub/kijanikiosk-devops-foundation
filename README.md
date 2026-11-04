@@ -150,36 +150,6 @@ Friday consolidates the production image, deployment configuration, final verifi
 - `reflection.md` — Discusses the implementation experience, challenges, technical decisions, and areas for improvement.
 - `pr-summary.md` — Summarises the completed work, key design decision, and proposed improvement.
 
-## Final Verification Results
-
-The Friday implementation produced the following results:
-
-| Verification area | Result |
-|---|---|
-| Production image size | 82 MB |
-| Baseline image size | 274 MB |
-| Image size reduction | Approximately 70.1% |
-| Runtime user | `kijani` |
-| TypeScript compiler in final image | Not installed |
-| Automated tests | 9/9 passed |
-| Container health status | Healthy |
-| Registry publishing | Successful |
-| Fresh image pull | Successful |
-| Deployment replicas | 2/2 ready |
-| NodePort | 30001 |
-| External health check | Successful |
-| In-cluster DNS health check | Successful |
-| Self-healing recovery time | 33 seconds |
-
-The production image was published to the private GitHub Container Registry using the tag:
-
-`1.1.0-f06b02a`
-
-The full image reference is:
-
-`ghcr.io/anm-hub/kijanikiosk-payments:1.1.0-f06b02a`
-
-The deployment used two application replicas and successfully restored the required replica count after one running instance was manually deleted.
 
 ## Known Limitations and Future Improvements
 
