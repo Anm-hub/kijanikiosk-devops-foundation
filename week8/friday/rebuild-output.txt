@@ -1,0 +1,47 @@
+KijaniKiosk Payments - Friday Clean Rebuild Verification
+
+Build command:
+docker build --no-cache -f Dockerfile.production -t kijanikiosk-payments:friday-check .
+
+Build result: SUCCESS
+
+Automated tests:
+Test suites: 1 passed
+Tests: 9 passed
+Result: PASS
+
+Build output:
+3 files generated:
+- index.js
+- payments.js
+- server.js
+
+Production image:
+kijanikiosk-payments:friday-check
+
+Docker disk usage: 82MB
+Docker content size: 21.8MB
+
+Runtime user:
+kijani
+Result: PASS
+
+TypeScript compiler:
+Not installed in production image.
+Result: PASS
+
+Dependency audit notice:
+npm reported 26 vulnerabilities in the builder dependency installation:
+4 low and 22 moderate.
+Further dependency review and remediation are recommended.
+
+Registry integration:
+Private GHCR package verified.
+Versioned image successfully pushed and freshly pulled.
+Fresh container became healthy.
+Health endpoint returned version 1.1.0.
+
+Kubernetes integration:
+Two replicas successfully deployed.
+NodePort and in-cluster DNS health checks passed.
+Pod replacement after deletion was successful.

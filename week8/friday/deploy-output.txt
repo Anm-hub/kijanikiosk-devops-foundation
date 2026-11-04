@@ -1,0 +1,20 @@
+WEEK 8 FRIDAY - DEPLOYMENT EVIDENCE
+Date: 2026-11-02T00:45:14+03:00
+
+ROLLOUT STATUS:
+deployment "kk-payments" successfully rolled out
+
+DEPLOYMENT:
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           6m16s
+
+PODS:
+NAME                           READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+kk-payments-65fb7f8445-w2dsr   1/1     Running   0          6m16s   10.244.0.6   minikube   <none>           <none>
+kk-payments-65fb7f8445-x446z   1/1     Running   0          2m48s   10.244.0.8   minikube   <none>           <none>
+
+DEPLOYMENT IMAGE:
+ghcr.io/anm-hub/kijanikiosk-payments:1.1.0-f06b02a
+
+IMAGE PULL POLICY:
+Always

@@ -1,0 +1,29 @@
+WEEK 8 FRIDAY - SERVICE EVIDENCE
+Date: 2026-11-02T00:45:34+03:00
+
+SERVICE:
+NAME                  TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kk-payments-service   NodePort   10.107.250.193   <none>        3001:30001/TCP   6m37s
+
+ENDPOINTS:
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+NAME                  ENDPOINTS                         AGE
+kk-payments-service   10.244.0.6:3001,10.244.0.8:3001   6m37s
+
+MINIKUBE IP:
+192.168.49.2
+
+NODEPORT HEALTH CHECK:
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     33   0     33   0      0  29126      0                              0100     33   0     33   0      0  27966      0                              0100     33   0     33   0      0  27027      0                              0
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 01 Nov 2026 21:45:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"status":"ok","version":"1.1.0"}
+IN-CLUSTER DNS HEALTH CHECK:
+{"status":"ok","version":"1.1.0"}

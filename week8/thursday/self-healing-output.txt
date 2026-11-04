@@ -1,0 +1,50 @@
+KijaniKiosk Payments - Thursday Kubernetes Self-Healing Evidence
+
+Cluster:
+Minikube
+Kubernetes version: v1.37.0
+Node status: Ready
+
+Deployment:
+Name: kk-payments
+Desired replicas: 2
+Ready replicas: 2
+
+Original Pod deleted:
+kk-payments-96b6b5899-5tgsh
+
+Deletion timestamp:
+2026-11-01T23:42:54+03:00
+
+Replacement Pod:
+kk-payments-96b6b5899-c86pq
+
+Replacement status:
+1/1 Running
+
+Surviving Pod:
+kk-payments-96b6b5899-8wl8h
+
+Observed recovery measurement:
+228 seconds (deletion command to final timestamp capture)
+
+Final state:
+2/2 Pods Running
+
+Service:
+kk-payments-service
+Type: NodePort
+Port: 3001
+NodePort: 30001
+
+Service endpoints:
+10.244.0.3:3001
+10.244.0.5:3001
+
+NodePort health check:
+{"status":"ok","version":"1.1.0"}
+
+Internal Kubernetes DNS health check:
+{"status":"ok","version":"1.1.0"}
+
+Result: PASS

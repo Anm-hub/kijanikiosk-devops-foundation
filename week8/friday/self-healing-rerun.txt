@@ -1,0 +1,24 @@
+WEEK 8 FRIDAY - FRESH SELF-HEALING TEST
+
+Initial deployment:
+2 replicas, both Running and Ready.
+
+Start time: 2026-11-02T00:42:24+03:00
+Deleted Pod: kk-payments-65fb7f8445-qqpkr
+
+End time: 2026-11-02T00:42:57+03:00
+Recovery time: 33 seconds.
+
+Replacement Pod:
+kk-payments-65fb7f8445-x446z
+
+Remaining Pod:
+kk-payments-65fb7f8445-w2dsr
+
+Observed replacement progression:
+Pending -> ContainerCreating -> Running (1/1 Ready).
+
+Final state:
+2 replicas Running and Ready.
+
+Result: PASS

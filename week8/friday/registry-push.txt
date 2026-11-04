@@ -1,0 +1,22 @@
+WEEK 8 FRIDAY - PRIVATE REGISTRY EVIDENCE
+
+Registry: ghcr.io/anm-hub/kijanikiosk-payments
+Visibility: Private
+Package version: 1.1.0
+Source Git commit: f06b02a
+Image tag: 1.1.0-f06b02a
+
+Production image build: SUCCESS
+Registry push: SUCCESS
+Published image:
+ghcr.io/anm-hub/kijanikiosk-payments:1.1.0-f06b02a
+
+Digest:
+sha256:d91d1c520288796b35ffb48b31e142c2d6a42515712078012e79583ae63b62f1
+
+Fresh pull verification:
+- Removed the local registry-tagged image.
+- Pulled the image successfully from GHCR.
+- Retrieved the same digest as the published image.
+
+No registry credentials were stored in project files.
